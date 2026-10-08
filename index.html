@@ -375,7 +375,7 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
         user access under control — and who is just as happy fixing the problem in front of a user.
       </p>
       <div class="hero-cta reveal">
-        <a href="#" class="btn btn-primary" id="downloadCV" download>
+        <a href="Fedric_Winardo_New_CV.pdf" class="btn btn-primary" download>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
           Download CV
         </a>
@@ -684,32 +684,6 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
   /* ---------- Language bars ---------- */
   const lb = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate'); lb.unobserve(e.target); } }), { threshold: .4 });
   $$('.lang-row').forEach(el => lb.observe(el));
-
-  /* ---------- Download CV (generated on the fly) ---------- */
-  const cvText = [
-    'FEDRIC WINARDO',
-    'Banten, Indonesia | +62 812-3774-4133 | fedricwnrd@gmail.com',
-    'linkedin.com/in/fedric-winardo',
-    '',
-    'EDUCATION',
-    'BINUS University, Tangerang (2023 - Present)',
-    'Information Systems - Business Intelligence | CGPA 3.77 / 4.00',
-    '',
-    'EXPERIENCE',
-    'PT MDS Retailing Tbk - IT Governance & Security Intern (Jul 2026 - Present)',
-    'PT Realta Chakradharma - IS Consultant Intern (Feb 2026 - Jul 2026)',
-    'PT Bidadari Alam Semesta - Mandarin Tour Guide & Officer (2022 - 2026)',
-    '',
-    'SKILLS: IT Governance, Security Compliance, ISO/IEC 27001, ITIL, COBIT,',
-    'Active Directory, Microsoft Entra ID, Lansweeper, Atera, AnyDesk, SSMS,',
-    'SQL, Java, Python, Figma, UI/UX, Microsoft Office.',
-    '',
-    'LANGUAGES: Indonesian (Native), English, Chinese Mandarin.'
-  ].join('\n');
-  const cvBtn = $('#downloadCV');
-  const blob = new Blob([cvText], { type: 'text/plain' });
-  cvBtn.href = URL.createObjectURL(blob);
-  cvBtn.setAttribute('download', 'Fedric-Winardo-CV.txt');
 
   /* ---------- Skills data ---------- */
   // icon: slug from Simple Icons CDN, or {emoji} fallback
