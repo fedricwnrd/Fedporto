@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Fedric's Corner — IT Governance, Security & Information Systems portfolio of Fedric Winardo." />
+  <meta name="author" content="Fedric Winardo" />
+  <title>Fedric's Corner — Fedric Winardo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='88'>🛡️</text></svg>" />
+  <style>
+/* ================================================================
+   Fedric's Corner — portfolio
+   Light & Dark theme. Default: light (rgb 255,255,255)
+   ================================================================ */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f6f7f9;
+  --bg-card: #ffffff;
+  --ink: #14161a;
+  --ink-soft: #4b5563;
+  --ink-mute: #9aa3af;
+  --line: #e9ebef;
+  --line-soft: #f1f3f6;
+  --brand: #4f46e5;
+  --brand-2: #0ea5e9;
+  --cyan: #06b6d4;
+  --violet: #7c3aed;
+  --green: #10b981;
+  --green-ink: #047857;
+  --green-bg: #d7f5e8;
+  --accent-grad: linear-gradient(100deg, #4f46e5, #6366f1 35%, #0ea5e9 75%, #22d3ee);
+  --shadow-sm: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+  --shadow-md: 0 10px 30px rgba(16,24,40,.08);
+  --shadow-lg: 0 24px 60px rgba(79,70,229,.16);
+  --radius: 16px;
+  --radius-lg: 22px;
+  --maxw: 1140px;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #0d0f14;           /* neutral near-black */
+  --bg-soft: #14171f;
+  --bg-card: #171b24;
+  --ink: #eef1f6;
+  --ink-soft: #aab3c2;
+  --ink-mute: #6b7383;
+  --line: #262b36;
+  --line-soft: #1e222c;
+  --brand: #6366f1;
+  --brand-2: #38bdf8;
+  --cyan: #06b6d4;
+  --violet: #7c3aed;
+  --accent-grad: linear-gradient(100deg, #4f46e5, #6366f1 35%, #0ea5e9 75%, #22d3ee);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --shadow-md: 0 14px 36px rgba(0,0,0,.55);
+  --shadow-lg: 0 26px 70px rgba(0,0,0,.65);
+  --green-bg: rgba(16,185,129,.16);
+  --green-ink: #34d399;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.65;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background .4s var(--ease), color .4s var(--ease);
+}
+h1,h2,h3,h4 { line-height: 1.12; letter-spacing: -.02em; font-weight: 800; }
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(99,102,241,.22); }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 26px; }
+
+/* ---------- Scroll progress ---------- */
+.progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 1000;
+  background: var(--accent-grad); transition: width .1s linear; }
+
+/* ---------- Navbar ---------- */
+.nav { position: fixed; top: 0; inset-inline: 0; z-index: 900; border-bottom: 1px solid transparent;
+  transition: background .35s var(--ease), border-color .35s, box-shadow .35s; }
+.nav.scrolled { background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: saturate(180%) blur(16px); border-bottom-color: var(--line); box-shadow: var(--shadow-sm); }
+.nav-row { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.brand { font-weight: 800; font-size: 1.18rem; letter-spacing: -.03em; display: inline-flex; align-items: center; gap: 2px; }
+.brand .apos { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand .corner { color: var(--ink-mute); font-weight: 600; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a { padding: 9px 15px; border-radius: 10px; font-size: .93rem; font-weight: 500; color: var(--ink-soft);
+  transition: color .2s, background .2s; }
+.nav-links a:hover { color: var(--ink); background: var(--bg-soft); }
+.nav-links a.active { color: var(--brand); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line);
+  background: var(--bg-card); color: var(--ink-soft); padding: 8px 13px; border-radius: 100px; cursor: pointer;
+  font-size: .82rem; font-weight: 600; transition: all .25s var(--ease); }
+.theme-toggle:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-1px); }
+.theme-toggle .ic { width: 16px; height: 16px; display: inline-grid; place-items: center; }
+.theme-toggle .lbl-dark { display: none; }
+html[data-theme="dark"] .theme-toggle .lbl-light { display: none; }
+html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
+.burger span { width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: .3s; }
+.burger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2){ opacity: 0; }
+.burger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------- Buttons ---------- */
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 13px;
+  font-weight: 600; font-size: .96rem; cursor: pointer; border: 1px solid transparent;
+  transition: transform .2s var(--ease), box-shadow .25s, background .25s, color .25s, border-color .25s; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: var(--accent-grad); color: #fff; box-shadow: var(--shadow-lg); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 30px 70px rgba(79,70,229,.3); }
+.btn-ghost { background: var(--bg-card); color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { transform: translateY(-3px); border-color: var(--brand); color: var(--brand); box-shadow: var(--shadow-md); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 70px; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 8px transparent; } }
+.hero-inner { position: relative; z-index: 1; max-width: 920px; }
+.hero-title { font-size: clamp(2.9rem, 9vw, 5.6rem); font-weight: 900; letter-spacing: -.045em; }
+.hero-title .hi { display: block; color: var(--ink); }
+.hero-title .name { display: block; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; white-space: nowrap; font-size: clamp(2.4rem, 9.2vw, 5.6rem); }
+.hero-desc { max-width: 640px; margin-top: 26px; font-size: 1.14rem; color: var(--ink-soft); }
+.hero-desc b { color: var(--ink); font-weight: 700; }
+.hero-cta { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-rule { margin: 48px 0 28px; height: 1px; background: linear-gradient(90deg, var(--line), transparent); max-width: 680px; }
+.hero-stats { display: flex; gap: 54px; flex-wrap: wrap; }
+.hstat .num { font-size: 2rem; font-weight: 900; letter-spacing: -.02em;
+  background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: var(--mono); }
+.hstat .num.green { background: none; color: var(--green-ink); -webkit-text-fill-color: var(--green-ink); }
+.hstat .lbl { font-size: .86rem; color: var(--ink-mute); margin-top: 2px; }
+
+/* ---------- Section shell ---------- */
+.section { padding: 104px 0; }
+.section.soft { background: var(--bg-soft); border-block: 1px solid var(--line); }
+.sec-head { margin-bottom: 50px; }
+.sec-kicker { font-family: var(--mono); font-size: .82rem; font-weight: 600; color: var(--brand); letter-spacing: .04em; }
+.sec-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-top: 6px; }
+.sec-title .grad { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sec-sub { color: var(--ink-soft); margin-top: 12px; max-width: 620px; }
+.center { text-align: center; }
+.center .sec-sub { margin-inline: auto; }
+
+/* ---------- About ---------- */
+.about-grid { display: grid; grid-template-columns: 1.25fr .9fr; gap: 54px; align-items: center; }
+.about-text p { font-size: 1.1rem; color: var(--ink-soft); margin-bottom: 18px; }
+.about-text p b { color: var(--ink); font-weight: 700; }
+.about-text .lead { font-size: 1.22rem; color: var(--ink); font-weight: 600; }
+.about-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.about-meta .tag { font-family: var(--mono); font-size: .82rem; font-weight: 600; color: var(--ink-soft);
+  background: var(--bg-card); border: 1px solid var(--line); padding: 8px 14px; border-radius: 100px; }
+.about-meta .tag b { color: var(--brand); }
+.photo-frame { position: relative; justify-self: center; width: 100%; max-width: 360px; aspect-ratio: 4/5; border-radius: 26px;
+  background: var(--bg-card); border: 1px solid var(--line); box-shadow: var(--shadow-md); overflow: hidden; }
+.photo-frame::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); border-radius: inherit; }
+.photo-frame .ring { position: absolute; inset: -2px; z-index: 0; border-radius: inherit; padding: 2px;
+  background: var(--accent-grad); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: .9; }
+.photo-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.photo-ph { position: absolute; inset: 0; z-index: 0; display: grid; place-items: center; gap: 10px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 14%, var(--bg-card)), var(--bg-card)); text-align: center; }
+.photo-ph .mono { font-family: var(--mono); font-size: .78rem; color: var(--ink-mute); }
+.photo-ph .ini { font-size: 3.4rem; font-weight: 900; letter-spacing: -.04em; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.photo-badge { position: absolute; left: 14px; bottom: 14px; z-index: 3; display: flex; align-items: center; gap: 8px;
+  background: color-mix(in srgb, var(--bg-card) 85%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--line);
+  padding: 8px 13px; border-radius: 100px; font-size: .8rem; font-weight: 600; box-shadow: var(--shadow-sm); }
+.photo-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+/* ---------- Experience cards ---------- */
+.exp-list { display: grid; gap: 20px; }
+.exp-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 30px 32px; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s; }
+.exp-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); }
+.exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.exp-role-chip { font-size: .74rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent); padding: 5px 12px; border-radius: 100px; }
+.exp-role-chip.past { color: var(--ink-mute); background: var(--bg-soft); }
+.exp-date { font-family: var(--mono); font-size: .82rem; font-weight: 600; color: var(--ink-soft);
+  border: 1px solid var(--line); padding: 7px 13px; border-radius: 10px; white-space: nowrap; }
+.exp-date.active { color: var(--green-ink); border-color: color-mix(in srgb, var(--green) 45%, transparent);
+  background: var(--green-bg); position: relative; }
+.exp-date.active::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 30%, transparent); animation: pulse 2s infinite; }
+.exp-card h3 { font-size: 1.4rem; margin-top: 16px; }
+.exp-company { color: var(--ink-soft); font-weight: 500; margin-top: 4px; }
+.exp-company .muted { color: var(--ink-mute); }
+.exp-card ul { list-style: none; margin-top: 20px; display: grid; gap: 11px; }
+.exp-card li { position: relative; padding-left: 22px; color: var(--ink-soft); }
+.exp-card li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--brand-2); }
+.exp-card li b { color: var(--ink); font-weight: 700; }
+.exp-tags { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 9px; }
+.exp-tags span { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); border: 1px solid var(--line); padding: 6px 12px; border-radius: 9px; }
+
+/* ---------- Projects ---------- */
+.proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.proj-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 30px;
+  display: flex; flex-direction: column; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s; }
+.proj-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); }
+.proj-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.proj-type { font-size: .76rem; font-weight: 700; color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent); padding: 6px 13px; border-radius: 100px; }
+.proj-type.academic { color: var(--cyan); background: color-mix(in srgb, var(--cyan) 14%, transparent); }
+.proj-org { font-family: var(--mono); font-size: .8rem; color: var(--ink-mute); }
+.proj-card h3 { font-size: 1.42rem; margin-top: 18px; }
+.proj-desc { color: var(--ink-soft); margin-top: 12px; }
+.proj-inner { margin-top: 20px; background: var(--bg-soft); border: 1px solid var(--line-soft); border-radius: 14px; padding: 18px; }
+.proj-inner-h { font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 14px; }
+.flow { display: grid; gap: 9px; }
+.flow-step { font-family: var(--mono); font-size: .86rem; color: var(--ink); background: var(--bg-card); border: 1px solid var(--line);
+  padding: 11px 14px; border-radius: 10px; display: flex; gap: 10px; }
+.flow-step .n { color: var(--brand); font-weight: 700; }
+.arch { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.arch-cell { background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.arch-cell .k { font-family: var(--mono); font-size: .72rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: .04em; }
+.arch-cell .v { font-weight: 600; font-size: .9rem; margin-top: 2px; }
+.proj-foot { margin-top: auto; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.proj-foot .meta { font-size: .85rem; color: var(--ink-mute); }
+.proj-status { font-weight: 700; font-size: .9rem; display: inline-flex; align-items: center; gap: 7px; }
+.proj-status.ongoing { color: var(--brand); }
+.proj-status.done { color: var(--green-ink); }
+.proj-status .d { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.proj-status.ongoing .d { animation: pulse 2s infinite; box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent); }
+
+/* ---------- Skills ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px; }
+.chip { font-family: var(--mono); font-size: .84rem; font-weight: 600; color: var(--ink-soft); background: var(--bg-card);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 100px; cursor: pointer; transition: all .22s var(--ease); }
+.chip:hover { color: var(--ink); border-color: var(--brand); }
+.chip.active { background: var(--accent-grad); color: #fff; border-color: transparent; box-shadow: var(--shadow-md); }
+.skill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.skill-card { position: relative; text-align: left; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 15px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px;
+  transition: transform .25s var(--ease), box-shadow .25s, border-color .25s, opacity .3s; }
+.skill-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--brand) 40%, var(--line)); }
+.skill-card.hide { display: none; }
+.skill-ic { width: 42px; height: 42px; flex: none; border-radius: 11px; display: grid; place-items: center;
+  background: var(--bg-soft); border: 1px solid var(--line-soft); }
+.skill-ic img { width: 22px; height: 22px; }
+.skill-ic.gen { font-size: 1.2rem; }
+.skill-meta .nm { font-weight: 700; font-size: .98rem; }
+.skill-meta .ds { font-size: .8rem; color: var(--ink-mute); }
+.skill-card .chev { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); font-size: .9rem; opacity: 0; transition: opacity .2s, transform .2s; }
+.skill-card:hover .chev { opacity: 1; transform: translateY(-50%) translateX(2px); }
+
+/* soft skills + languages */
+.soft-wrap { margin-top: 54px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.soft-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); }
+.soft-card h3 { font-size: 1.15rem; display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.soft-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.soft-pills span { font-size: .88rem; font-weight: 500; color: var(--ink); background: var(--bg-soft); border: 1px solid var(--line);
+  padding: 8px 15px; border-radius: 11px; transition: all .2s; }
+.soft-pills span:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-2px); }
+.lang-rows { display: grid; gap: 13px; }
+.lang-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.lang-row .nm { font-weight: 600; }
+.lang-row .bar { flex: 1; height: 7px; margin: 0 14px; border-radius: 100px; background: var(--bg-soft); overflow: hidden; }
+.lang-row .bar i { display: block; height: 100%; width: 0; border-radius: 100px; background: var(--accent-grad); transition: width 1.1s var(--ease); }
+.lang-row.animate .bar i { width: var(--v); }
+.lang-row .lv { font-family: var(--mono); font-size: .76rem; color: var(--ink-mute); white-space: nowrap; }
+
+/* ---------- Modal ---------- */
+.modal { position: fixed; inset: 0; z-index: 1100; display: none; align-items: center; justify-content: center; padding: 24px; }
+.modal.open { display: flex; }
+.modal-bg { position: absolute; inset: 0; background: rgba(5,8,18,.55); backdrop-filter: blur(4px); }
+.modal-box { position: relative; z-index: 1; width: 100%; max-width: 460px; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 20px; padding: 30px; box-shadow: var(--shadow-lg); transform: translateY(14px) scale(.97); opacity: 0;
+  transition: transform .3s var(--ease), opacity .3s; }
+.modal.open .modal-box { transform: none; opacity: 1; }
+.modal-head { display: flex; align-items: center; gap: 15px; margin-bottom: 16px; }
+.modal-head .skill-ic { width: 52px; height: 52px; }
+.modal-head .skill-ic img { width: 28px; height: 28px; }
+.modal-head h3 { font-size: 1.3rem; }
+.modal-head .cat { font-family: var(--mono); font-size: .76rem; color: var(--brand); }
+.modal-box p { color: var(--ink-soft); }
+.modal-level { margin-top: 20px; }
+.modal-level .top { display: flex; justify-content: space-between; font-size: .82rem; font-weight: 600; margin-bottom: 7px; }
+.modal-level .track { height: 9px; border-radius: 100px; background: var(--bg-soft); overflow: hidden; }
+.modal-level .track i { display: block; height: 100%; border-radius: 100px; background: var(--accent-grad); width: 0; transition: width .6s var(--ease); }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--bg-soft); color: var(--ink-soft); cursor: pointer; font-size: 1.1rem; line-height: 1; transition: all .2s; }
+.modal-close:hover { color: var(--ink); border-color: var(--brand); }
+
+/* ---------- Contact ---------- */
+.contact-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 26px; padding: 56px 44px; text-align: center;
+  box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+.contact-card::before { content: ""; position: absolute; inset: 0; z-index: 0; opacity: .5;
+  background: radial-gradient(ellipse 60% 80% at 50% -10%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 70%); }
+.contact-card > * { position: relative; z-index: 1; }
+.contact-card h2 { font-size: clamp(2rem, 5vw, 3rem); }
+.contact-card h2 .grad { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.contact-card p { color: var(--ink-soft); max-width: 560px; margin: 16px auto 32px; font-size: 1.1rem; }
+.contact-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.contact-mini { margin-top: 30px; font-family: var(--mono); font-size: .84rem; color: var(--ink-mute); }
+.contact-mini a { color: var(--ink-soft); border-bottom: 1px dashed var(--line); }
+.contact-mini a:hover { color: var(--brand); }
+
+/* ---------- Footer ---------- */
+.footer { padding: 40px 0; text-align: center; color: var(--ink-mute); font-size: .9rem; border-top: 1px solid var(--line); }
+
+/* ---------- Back to top ---------- */
+.totop { position: fixed; right: 24px; bottom: 24px; width: 46px; height: 46px; border-radius: 50%; border: 0;
+  background: var(--accent-grad); color: #fff; cursor: pointer; font-size: 1.2rem; box-shadow: var(--shadow-lg);
+  opacity: 0; pointer-events: none; transform: translateY(12px); transition: all .3s var(--ease); z-index: 800; }
+.totop.show { opacity: 1; pointer-events: auto; transform: none; }
+.totop:hover { transform: translateY(-4px); }
+
+/* ---------- Reveal ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 940px) {
+  .nav-links { position: fixed; inset: 68px 0 auto 0; flex-direction: column; background: color-mix(in srgb, var(--bg) 97%, transparent);
+    backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); padding: 14px 22px; gap: 2px; transform: translateY(-130%); transition: transform .35s var(--ease); box-shadow: var(--shadow-md); }
+  .nav-links.open { transform: none; }
+  .burger { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .photo-frame { grid-row: 1; max-width: 300px; }
+  .proj-grid { grid-template-columns: 1fr; }
+  .skill-grid { grid-template-columns: repeat(2, 1fr); }
+  .soft-wrap { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .skill-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 30px; }
+  .section { padding: 76px 0; }
+  .arch { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-row">
+      <a href="#top" class="brand">Fedric<span class="apos">'s</span>&nbsp;<span class="corner">Corner</span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+          <span class="ic" aria-hidden="true">
+            <svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </span>
+          <span class="lbl-light">Light</span><span class="lbl-dark">Dark</span>
+        </button>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
+      <h1 class="hero-title reveal"><span class="hi">Hi, I'm</span><span class="name">Fedric Winardo.</span></h1>
+      <p class="hero-desc reveal">
+        An <b>IT Governance &amp; Security intern</b> who writes the policies and procedures that keep vendor and
+        user access under control — and who is just as happy fixing the problem in front of a user.
+      </p>
+      <div class="hero-cta reveal">
+        <a href="#" class="btn btn-primary" id="downloadCV" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          Download CV
+        </a>
+        <a href="#experience" class="btn btn-ghost">
+          View Work Deliverables
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="hero-rule reveal"></div>
+      <div class="hero-stats reveal">
+        <div class="hstat"><div class="num">5+</div><div class="lbl">Languages &amp; dialects</div></div>
+        <div class="hstat"><div class="num">3</div><div class="lbl">Organizations worked with</div></div>
+        <div class="hstat"><div class="num green">Tangerang</div><div class="lbl">Based in Banten, Indonesia</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">About <span class="grad">me</span></h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p class="lead">I sit right where business meets technology — and I like keeping both sides honest.</p>
+          <p>
+            I'm currently pursuing <b>Information Systems</b> at <b>BINUS University</b> (CGPA 3.77), majoring in
+            <b>Business Intelligence</b>. My coursework runs from data &amp; information management to systems analysis,
+            UX research, and business analytics — the foundation I use to reason about how organizations actually run.
+          </p>
+          <p>
+            Professionally, I'm an <b>IT Governance &amp; Security Intern</b> at PT MDS Retailing Tbk, where I help draft
+            IT policies and SOPs while supporting day-to-day user operations. Before that I worked as an <b>IS Consultant</b>
+            bridging client requirements with software solutions, and spent years as a <b>multilingual tour officer</b> —
+            experience that taught me to communicate clearly with very different audiences.
+          </p>
+        </div>
+
+        <div class="photo-frame reveal">
+          <span class="ring"></span>
+          <!-- To use your real photo: drop a file named profile.jpg next to this HTML -->
+          <img src="profile.jpg" alt="Fedric Winardo" onerror="this.style.display='none'" />
+          <div class="photo-ph">
+            <span class="ini">FW</span>
+            <span class="mono">// drop profile.jpg here</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section soft" id="experience">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">Work <span class="grad">Experience</span></h2>
+        <p class="sec-sub">Three organizations, one through-line: understand the system, govern it well, and keep people moving.</p>
+      </div>
+
+      <div class="exp-list">
+
+        <article class="exp-card reveal">
+          <div class="exp-top">
+            <span class="exp-role-chip">Current Role</span>
+            <span class="exp-date active">Jul 2026 — Present</span>
+          </div>
+          <h3>PT MDS Retailing Tbk</h3>
+          <p class="exp-company">IT Governance &amp; Security Intern <span class="muted">| Dual Role: IT User Support</span></p>
+          <ul>
+            <li>Developing corporate <b>IT security policy &amp; SOPs</b> for <b>Third-Party Access Management</b> to reduce vendor-side data exposure risks.</li>
+            <li>Administering end-user systems with <b>Active Directory, Lansweeper, Atera,</b> and <b>AnyDesk</b> across enterprise business units.</li>
+            <li>Assisting with <b>asset discovery</b> and establishing standardized <b>endpoint compliance</b> baselines.</li>
+            <li>Providing <b>Tier-1 &amp; Tier-2</b> technical support to internal staff to ensure operational continuity.</li>
+          </ul>
+          <div class="exp-tags"><span>IT Governance</span><span>SOP Development</span><span>Active Directory</span><span>IAM</span><span>Atera / AnyDesk</span></div>
+        </article>
+
+        <article class="exp-card reveal">
+          <div class="exp-top">
+            <span class="exp-role-chip past">Internship</span>
+            <span class="exp-date">Feb 2026 — Jul 2026</span>
+          </div>
+          <h3>PT Realta Chakradharma</h3>
+          <p class="exp-company">IS Consultant Intern</p>
+          <ul>
+            <li>Bridged the gap between <b>client business requirements</b> and technical software solutions.</li>
+            <li>Simulated real-world <b>troubleshooting scenarios</b> to analyze and resolve client system complaints.</li>
+            <li>Guided clients through <b>onboarding</b> and delivered functional recommendations.</li>
+            <li>Partnered with internal teams to optimize system <b>usability and adoption</b>.</li>
+          </ul>
+          <div class="exp-tags"><span>Requirements Analysis</span><span>Troubleshooting</span><span>Client Onboarding</span><span>System Adoption</span></div>
+        </article>
+
+        <article class="exp-card reveal">
+          <div class="exp-top">
+            <span class="exp-role-chip past">Full-time</span>
+            <span class="exp-date">Jan 2022 — Jan 2026</span>
+          </div>
+          <h3>PT Bidadari Alam Semesta — Bali</h3>
+          <p class="exp-company">Mandarin Tour Guide &amp; Officer</p>
+          <ul>
+            <li>Guided and managed <b>tour groups</b> of various sizes, keeping schedules on time and running smoothly.</li>
+            <li>Delivered engaging presentations on <b>history, culture,</b> and local attractions.</li>
+            <li>Coordinated with external parties — <b>transport, restaurants,</b> and venue managers.</li>
+            <li>Handled participant inquiries to ensure <b>comfort and satisfaction</b> throughout each journey.</li>
+          </ul>
+          <div class="exp-tags"><span>Leadership</span><span>Communication</span><span>Coordination</span><span>Multilingual</span></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">Featured <span class="grad">Projects</span></h2>
+        <p class="sec-sub">A governance deliverable in production and an end-to-end academic systems design.</p>
+      </div>
+
+      <div class="proj-grid">
+
+        <article class="proj-card reveal">
+          <div class="proj-top">
+            <span class="proj-type">Corporate Governance</span>
+            <span class="proj-org">PT MDS Retailing Tbk</span>
+          </div>
+          <h3>Third-Party Access Management Policy &amp; SOP</h3>
+          <p class="proj-desc">
+            A risk-mitigation governance project to regulate, control, and audit third-party vendor access into
+            internal enterprise infrastructure — reducing supply-chain cyber risk at the source.
+          </p>
+          <div class="proj-inner">
+            <div class="proj-inner-h">What I'm doing</div>
+            <div class="flow">
+              <div class="flow-step"><span class="n">01</span> Co-authoring the policy: identity validation, least-privilege &amp; vendor lifecycle controls.</div>
+              <div class="flow-step"><span class="n">02</span> Mapping vendor onboarding / offboarding workflows &amp; standardizing approval chains.</div>
+              <div class="flow-step"><span class="n">03</span> Aligning remote-access &amp; session audit practices with enterprise control baselines.</div>
+            </div>
+          </div>
+          <div class="proj-foot">
+            <span class="meta">Aligned with ISO/IEC 27001:2022</span>
+            <span class="proj-status ongoing"><span class="d"></span> Ongoing Project</span>
+          </div>
+        </article>
+
+        <article class="proj-card reveal">
+          <div class="proj-top">
+            <span class="proj-type academic">Academic Project</span>
+            <span class="proj-org">BINUS University</span>
+          </div>
+          <h3>JastipNow — Personal Shopper System</h3>
+          <p class="proj-desc">
+            End-to-end information system analysis, architectural modeling, and UI design for a trusted
+            peer-to-peer personal shopping &amp; proxy-shipping platform.
+          </p>
+          <div class="proj-inner">
+            <div class="proj-inner-h">System architecture stack</div>
+            <div class="arch">
+              <div class="arch-cell"><div class="k">Frontend UI</div><div class="v">Figma Wireframes</div></div>
+              <div class="arch-cell"><div class="k">Database</div><div class="v">SQL Server Model</div></div>
+              <div class="arch-cell"><div class="k">Analysis</div><div class="v">UML &amp; Use Cases</div></div>
+              <div class="arch-cell"><div class="k">Coursework</div><div class="v">Adv. IS Analysis</div></div>
+            </div>
+          </div>
+          <div class="proj-foot">
+            <span class="meta">Team Lead &amp; System Designer</span>
+            <span class="proj-status done"><span class="d"></span> Completed</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section soft" id="skills">
+    <div class="wrap">
+      <div class="sec-head center">
+        <h2 class="sec-title">Skills <span class="grad">&amp; Stack</span></h2>
+        <p class="sec-sub">Click any card to see how I actually use it and my proficiency level.</p>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="chip active" data-f="all">All Items</button>
+        <button class="chip" data-f="gov">Governance &amp; Security</button>
+        <button class="chip" data-f="it">IT Support &amp; SysAdmin</button>
+        <button class="chip" data-f="dev">Dev &amp; Database</button>
+        <button class="chip" data-f="tools">Software &amp; Tools</button>
+      </div>
+
+      <div class="skill-grid" id="skillGrid"><!-- injected by JS --></div>
+
+      <div class="soft-wrap">
+        <div class="soft-card reveal">
+          <h3>🤝 Soft Skills</h3>
+          <div class="soft-pills">
+            <span>Leadership</span><span>Communication</span><span>Team Management</span>
+            <span>Teamwork</span><span>Critical Thinking</span><span>Decision Making</span>
+          </div>
+        </div>
+        <div class="soft-card reveal">
+          <h3>🌐 Languages</h3>
+          <div class="lang-rows">
+            <div class="lang-row"><span class="nm">Indonesian</span><span class="bar" style="--v:100%"><i></i></span><span class="lv">Native</span></div>
+            <div class="lang-row"><span class="nm">English</span><span class="bar" style="--v:88%"><i></i></span><span class="lv">Professional</span></div>
+            <div class="lang-row"><span class="nm">Chinese (Mandarin)</span><span class="bar" style="--v:85%"><i></i></span><span class="lv">Professional</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact-card reveal">
+        <h2>Let's <span class="grad">connect</span></h2>
+        <p>
+          I'm always happy to talk IT governance, security, and information systems — or just to exchange ideas.
+          If something here resonates, reach out and let's start a conversation.
+        </p>
+        <div class="contact-btns">
+          <a class="btn btn-primary" href="mailto:fedricwnrd@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email me
+          </a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/fedric-winardo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM0 8h5v16H0zM8 8h4.8v2.2h.07c.67-1.2 2.3-2.47 4.73-2.47C22.4 7.73 24 10 24 14.1V24h-5v-8.5c0-2-.04-4.6-2.8-4.6-2.8 0-3.23 2.2-3.23 4.46V24H8z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">© 2026 | Fedric Winardo</div>
+  </footer>
+
+  <button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+  <!-- Skill modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-bg" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div class="modal-head">
+        <div class="skill-ic" id="mIcon"></div>
+        <div><h3 id="mName"></h3><div class="cat" id="mCat"></div></div>
+      </div>
+      <p id="mDesc"></p>
+      <div class="modal-level">
+        <div class="top"><span>Proficiency</span><span id="mPct"></span></div>
+        <div class="track"><i id="mBar"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  'use strict';
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+
+  /* ---------- Theme toggle (persisted) ---------- */
+  const root = document.documentElement;
+  const saved = localStorage.getItem('fc-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  $('#themeToggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('fc-theme', next);
+  });
+
+  /* ---------- Nav scroll + progress + back-to-top ---------- */
+  const nav = $('#nav'), progress = $('#progress'), totop = $('#totop');
+  function onScroll() {
+    const y = window.scrollY, h = document.documentElement;
+    nav.classList.toggle('scrolled', y > 16);
+    totop.classList.toggle('show', y > 520);
+    progress.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  totop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ---------- Mobile menu ---------- */
+  const burger = $('#burger'), navLinks = $('#navLinks');
+  burger.addEventListener('click', () => { navLinks.classList.toggle('open'); burger.classList.toggle('open'); });
+  $$('#navLinks a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); burger.classList.remove('open'); }));
+
+  /* ---------- Active link ---------- */
+  const map = {}; $$('#navLinks a').forEach(a => map[a.getAttribute('href').slice(1)] = a);
+  const navObs = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && map[e.target.id]) { $$('#navLinks a').forEach(a => a.classList.remove('active')); map[e.target.id].classList.add('active'); }
+  }), { threshold: .5 });
+  ['about','experience','projects','skills','contact'].forEach(id => { const el = document.getElementById(id); if (el) navObs.observe(el); });
+
+  /* ---------- Reveal ---------- */
+  const rev = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rev.unobserve(e.target); } }),
+    { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+  $$('.reveal').forEach(el => rev.observe(el));
+
+  /* ---------- Language bars ---------- */
+  const lb = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate'); lb.unobserve(e.target); } }), { threshold: .4 });
+  $$('.lang-row').forEach(el => lb.observe(el));
+
+  /* ---------- Download CV (generated on the fly) ---------- */
+  const cvText = [
+    'FEDRIC WINARDO',
+    'Banten, Indonesia | +62 812-3774-4133 | fedricwnrd@gmail.com',
+    'linkedin.com/in/fedric-winardo',
+    '',
+    'EDUCATION',
+    'BINUS University, Tangerang (2023 - Present)',
+    'Information Systems - Business Intelligence | CGPA 3.77 / 4.00',
+    '',
+    'EXPERIENCE',
+    'PT MDS Retailing Tbk - IT Governance & Security Intern (Jul 2026 - Present)',
+    'PT Realta Chakradharma - IS Consultant Intern (Feb 2026 - Jul 2026)',
+    'PT Bidadari Alam Semesta - Mandarin Tour Guide & Officer (2022 - 2026)',
+    '',
+    'SKILLS: IT Governance, Security Compliance, ISO/IEC 27001, ITIL, COBIT,',
+    'Active Directory, Microsoft Entra ID, Lansweeper, Atera, AnyDesk, SSMS,',
+    'SQL, Java, Python, Figma, UI/UX, Microsoft Office.',
+    '',
+    'LANGUAGES: Indonesian (Native), English, Chinese Mandarin.'
+  ].join('\n');
+  const cvBtn = $('#downloadCV');
+  const blob = new Blob([cvText], { type: 'text/plain' });
+  cvBtn.href = URL.createObjectURL(blob);
+  cvBtn.setAttribute('download', 'Fedric-Winardo-CV.txt');
+
+  /* ---------- Skills data ---------- */
+  // icon: slug from Simple Icons CDN, or {emoji} fallback
+  const si = s => `https://cdn.simpleicons.org/${s}`;
+  const skills = [
+    { n:'ISO/IEC 27001', d:'ISMS Framework', c:'gov', cat:'Governance & Security', lvl:80, emoji:'🛡️',
+      about:'Core reference framework I use when structuring information-security controls and shaping the Third-Party Access policy at MDS Retailing.' },
+    { n:'ITIL v4', d:'IT Service Management', c:'gov', cat:'Governance & Security', lvl:78, emoji:'🧭',
+      about:'Guides how I think about service operations, incident handling, and support workflows in a governed IT environment.' },
+    { n:'COBIT', d:'Enterprise IT Control', c:'gov', cat:'Governance & Security', lvl:72, emoji:'📘',
+      about:'Framework I actively expand on for aligning IT governance objectives with enterprise control baselines.' },
+    { n:'Enterprise IT SOP', d:'Policy Development', c:'gov', cat:'Governance & Security', lvl:85, emoji:'📄',
+      about:'Drafting and refining Standard Operating Procedures and IT policies across enterprise business units.' },
+    { n:'Third-Party Risk', d:'Vendor Governance', c:'gov', cat:'Governance & Security', lvl:82, emoji:'🔗',
+      about:'Governing vendor remote access, privileged-account lifecycles, and confidentiality to cut supply-chain risk.' },
+    { n:'Risk Assessment', d:'Vulnerability Mitigation', c:'gov', cat:'Governance & Security', lvl:80, emoji:'⚠️',
+      about:'Identifying exposure, running vulnerability checks, and prioritizing mitigation for enterprise assets.' },
+    { n:'Active Directory', d:'Domain & GPO Admin', c:'it', cat:'IT Support & SysAdmin', slug:'microsoftazure', lvl:84,
+      about:'Managing identities, group policy, and access control for end users across the organization.' },
+    { n:'Microsoft Entra ID', d:'Cloud IAM & SSO', c:'it', cat:'IT Support & SysAdmin', slug:'microsoftentraid', lvl:78,
+      about:'Cloud identity and access management — role assignment, SSO, and least-privilege permissions.' },
+    { n:'Lansweeper', d:'Asset Discovery & Audit', c:'it', cat:'IT Support & SysAdmin', lvl:80, emoji:'🗂️',
+      about:'Asset discovery, inventory, and endpoint compliance monitoring across enterprise hardware.' },
+    { n:'Atera', d:'RMM & IT Helpdesk', c:'it', cat:'IT Support & SysAdmin', lvl:85, emoji:'🎧',
+      about:'Remote monitoring & management plus ticketing to deliver fast Tier-1 / Tier-2 user support.' },
+    { n:'AnyDesk', d:'Remote Desktop Support', c:'it', cat:'IT Support & SysAdmin', slug:'anydesk', lvl:88,
+      about:'Remote desktop sessions for resolving daily hardware, software, and access issues.' },
+    { n:'Endpoint Mgmt', d:'Compliance Monitoring', c:'it', cat:'IT Support & SysAdmin', lvl:80, emoji:'💻',
+      about:'Keeping endpoints standardized, patched, and compliant with security baselines.' },
+    { n:'SSMS', d:'SQL Server Management', c:'dev', cat:'Dev & Database', slug:'microsoftsqlserver', lvl:76,
+      about:'Managing and querying SQL Server databases via SQL Server Management Studio.' },
+    { n:'SQL Querying', d:'Database Queries', c:'dev', cat:'Dev & Database', lvl:80, emoji:'🧮',
+      about:'Writing queries for analysis and data modeling — core to the BI side of my studies.' },
+    { n:'Python', d:'Data & Scripting', c:'dev', cat:'Dev & Database', slug:'python', lvl:74,
+      about:'Scripting, automation, and data work supporting analytics and application development.' },
+    { n:'Java', d:'Backend Logic', c:'dev', cat:'Dev & Database', slug:'openjdk', lvl:68,
+      about:'Object-oriented programming fundamentals and backend logic from coursework.' },
+    { n:'Figma', d:'UI Wireframing', c:'tools', cat:'Software & Tools', slug:'figma', lvl:82,
+      about:'Designing wireframes and interactive mockups — used for the JastipNow interface.' },
+    { n:'UI/UX Design', d:'Interface Architecture', c:'tools', cat:'Software & Tools', lvl:78, emoji:'🎨',
+      about:'User-experience research and interface structure, grounded in UX coursework at BINUS.' },
+    { n:'Microsoft Excel', d:'Data & Analytics', c:'tools', cat:'Software & Tools', lvl:85, emoji:'📊',
+      about:'Modeling, analysis, and reporting — a daily workhorse for governance documentation and BI.' },
+    { n:'Microsoft Word', d:'Policy Documenting', c:'tools', cat:'Software & Tools', lvl:88, emoji:'📝',
+      about:'Authoring structured policies, SOPs, and formal documentation.' },
+    { n:'Google Workspace', d:'Docs & Collaboration', c:'tools', cat:'Software & Tools', slug:'google', lvl:86,
+      about:'Collaborative docs and spreadsheets for team coordination and shared documentation.' },
+    { n:'Canva', d:'Visual Content', c:'tools', cat:'Software & Tools', slug:'canva', lvl:80,
+      about:'Fast visual content and presentation design for communicating ideas clearly.' }
+  ];
+
+  const grid = $('#skillGrid');
+  function iconMarkup(s) {
+    if (s.slug) return `<div class="skill-ic"><img src="${si(s.slug)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('gen');this.replaceWith(document.createTextNode('${s.emoji||'🔧'}'))"/></div>`;
+    return `<div class="skill-ic gen">${s.emoji || '🔧'}</div>`;
+  }
+  grid.innerHTML = skills.map((s, i) => `
+    <button class="skill-card reveal" data-c="${s.c}" data-i="${i}">
+      ${iconMarkup(s)}
+      <div class="skill-meta"><div class="nm">${s.n}</div><div class="ds">${s.d}</div></div>
+      <span class="chev">→</span>
+    </button>`).join('');
+  $$('#skillGrid .reveal').forEach(el => rev.observe(el));
+
+  /* ---------- Filters ---------- */
+  $$('#filters .chip').forEach(ch => ch.addEventListener('click', () => {
+    $$('#filters .chip').forEach(c => c.classList.remove('active')); ch.classList.add('active');
+    const f = ch.dataset.f;
+    $$('#skillGrid .skill-card').forEach(card => card.classList.toggle('hide', !(f === 'all' || card.dataset.c === f)));
+  }));
+
+  /* ---------- Modal ---------- */
+  const modal = $('#modal');
+  function openModal(s) {
+    const iconHost = $('#mIcon');
+    iconHost.className = 'skill-ic' + (s.slug ? '' : ' gen');
+    iconHost.innerHTML = s.slug
+      ? `<img src="${si(s.slug)}" alt="" onerror="this.parentNode.classList.add('gen');this.replaceWith(document.createTextNode('${s.emoji||'🔧'}'))"/>`
+      : (s.emoji || '🔧');
+    $('#mName').textContent = s.n; $('#mCat').textContent = '// ' + s.cat;
+    $('#mDesc').textContent = s.about; $('#mPct').textContent = s.lvl + '%';
+    const bar = $('#mBar'); bar.style.width = '0';
+    modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => requestAnimationFrame(() => bar.style.width = s.lvl + '%'));
+  }
+  function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+  grid.addEventListener('click', e => { const b = e.target.closest('.skill-card'); if (b) openModal(skills[+b.dataset.i]); });
+  modal.addEventListener('click', e => { if (e.target.hasAttribute('data-close')) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+})();
+  </script>
+</body>
+</html>
