@@ -200,6 +200,116 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
 .exp-tags { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 9px; }
 .exp-tags span { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); border: 1px solid var(--line); padding: 6px 12px; border-radius: 9px; }
 
+/* ---------- Organizational experience ---------- */
+.exp-subhead { margin: 64px 0 10px; display: flex; align-items: center; gap: 14px; }
+.exp-subhead h3 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; letter-spacing: -.02em; }
+.exp-subhead .grad { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.exp-hint { font-size: .98rem; font-weight: 500; color: var(--ink-soft); margin: 6px 0 24px; max-width: 640px;
+  display: flex; align-items: center; gap: 9px; line-height: 1.55; }
+.exp-hint svg { width: 17px; height: 17px; flex: none; color: var(--brand); }
+
+/* horizontal swipe track of role cards — smooth, hidden scrollbar */
+.org-track { display: flex; gap: 22px; overflow-x: auto; overflow-y: hidden; padding: 6px 6px 18px;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth; cursor: grab;
+  scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--brand) 55%, var(--line)) var(--bg-soft); }
+.org-track::-webkit-scrollbar { height: 10px; }
+.org-track::-webkit-scrollbar-track { background: var(--bg-soft); border-radius: 100px; }
+.org-track::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--brand) 50%, var(--line)); border-radius: 100px; }
+.org-track::-webkit-scrollbar-thumb:hover { background: var(--brand); }
+.org-track:active { cursor: grabbing; }
+
+/* one card per role — equal height */
+.org-card { flex: 0 0 clamp(290px, 80vw, 360px); display: flex; flex-direction: column;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s; }
+.org-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); }
+
+/* big photo at top with arrow navigation */
+.org-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--bg-soft); }
+.org-track-x { display: flex; height: 100%; transition: transform .4s var(--ease); }
+.org-shot { position: relative; flex: 0 0 100%; height: 100%;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--brand) 12%, var(--bg-soft)), var(--bg-soft)); }
+.org-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.org-shot .ph { position: absolute; inset: 0; z-index: 0; display: grid; place-items: center; gap: 6px; text-align: center; padding: 10px; }
+.org-shot .ph .ic { font-size: 1.6rem; opacity: .5; }
+.org-shot .ph .t { font-family: var(--mono); font-size: .66rem; color: var(--ink-mute); line-height: 1.3; }
+.org-media .count { position: absolute; top: 10px; right: 10px; z-index: 3; font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  color: #fff; background: rgba(10,14,25,.55); backdrop-filter: blur(4px); padding: 4px 9px; border-radius: 100px; pointer-events: none; }
+.org-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 32px; height: 32px; border-radius: 50%;
+  border: 0; display: grid; place-items: center; cursor: pointer; color: var(--ink); background: rgba(255,255,255,.82);
+  backdrop-filter: blur(4px); box-shadow: var(--shadow-sm); opacity: 0; transition: opacity .25s, background .2s; }
+html[data-theme="dark"] .org-nav { background: rgba(20,23,31,.8); color: var(--ink); }
+.org-media:hover .org-nav { opacity: 1; }
+.org-nav:hover { background: #fff; }
+html[data-theme="dark"] .org-nav:hover { background: rgba(30,34,44,.95); }
+.org-nav svg { width: 16px; height: 16px; }
+.org-nav.prev { left: 10px; }
+.org-nav.next { right: 10px; }
+.org-nav[disabled] { display: none; }
+@media (hover: none) { .org-nav { opacity: 1; } }
+
+/* card body */
+.org-body { padding: 20px 22px; display: flex; flex-direction: column; flex: 1; }
+.org-chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; font-size: .72rem; font-weight: 700;
+  color: var(--brand); background: color-mix(in srgb, var(--brand) 11%, transparent); padding: 4px 11px 4px 5px; border-radius: 100px; margin-bottom: 12px; }
+.org-chip .org-ico { width: 20px; height: 20px; flex: none; border-radius: 50%; object-fit: cover; background: #fff;
+  display: inline-grid; place-items: center; font-size: .8rem; overflow: hidden; box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 20%, transparent); }
+.org-chip img.org-ico { padding: 0; }
+.org-card h5 { font-size: 1.12rem; font-weight: 800; letter-spacing: -.01em; }
+.org-card .org-org { font-size: .84rem; color: var(--ink-soft); font-weight: 600; margin-top: 4px; }
+.org-card .org-date { font-family: var(--mono); font-size: .74rem; color: var(--ink-mute); margin-top: 4px; }
+.org-desc { color: var(--ink-soft); font-size: .94rem; margin-top: 12px; }
+.org-toggle { margin-top: auto; padding-top: 16px; align-self: flex-start; display: inline-flex; align-items: center; gap: 7px;
+  background: none; border: 0; cursor: pointer; font-family: inherit; font-size: .84rem; font-weight: 700; color: var(--brand); transition: gap .2s; }
+.org-toggle:hover { gap: 11px; }
+.org-toggle svg { width: 15px; height: 15px; }
+
+/* ---- Organization detail modal ---- */
+.org-modal { position: fixed; inset: 0; z-index: 1100; display: none; align-items: center; justify-content: center; padding: 24px; }
+.org-modal.open { display: flex; }
+.org-modal .bg { position: absolute; inset: 0; background: rgba(5,8,18,.55); backdrop-filter: blur(4px); }
+.org-modal .box { position: relative; z-index: 1; width: 100%; max-width: 560px; max-height: 90vh; overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg); isolation: isolate;
+  display: flex; flex-direction: column;
+  transform: translateY(14px) scale(.97); opacity: 0; transition: transform .3s var(--ease), opacity .3s; }
+.org-modal.open .box { transform: none; opacity: 1; }
+.org-modal .m-media { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--bg-soft);
+  border-radius: 21px 21px 0 0; }
+.org-modal .m-media .org-track-x { height: 100%; }
+.org-modal .m-media .count { position: absolute; top: 12px; left: 12px; z-index: 3; font-family: var(--mono); font-size: .7rem;
+  font-weight: 600; color: #fff; background: rgba(10,14,25,.55); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 100px; pointer-events: none; }
+.org-modal .m-media .org-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px;
+  border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer; color: var(--ink);
+  background: rgba(255,255,255,.85); backdrop-filter: blur(4px); box-shadow: var(--shadow-sm); opacity: 1; transition: background .2s; }
+html[data-theme="dark"] .org-modal .m-media .org-nav { background: rgba(20,23,31,.85); }
+.org-modal .m-media .org-nav.prev { left: 12px; }
+.org-modal .m-media .org-nav.next { right: 12px; }
+.org-modal .m-media .org-nav[disabled] { display: none; }
+.org-modal .m-media .org-nav svg { width: 17px; height: 17px; }
+.org-modal .m-media { flex: none; }
+.org-modal .m-body { padding: 24px 26px 28px; overflow-y: auto; scrollbar-width: none; }
+.org-modal .m-body::-webkit-scrollbar { display: none; }
+.org-modal .m-chip { display: inline-flex; align-items: center; gap: 7px; font-size: .74rem; font-weight: 700; color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 11%, transparent); padding: 4px 12px 4px 5px; border-radius: 100px; margin-bottom: 12px; }
+.org-modal .m-chip .org-ico { width: 20px; height: 20px; flex: none; border-radius: 50%; object-fit: cover; background: #fff;
+  display: inline-grid; place-items: center; font-size: .8rem; overflow: hidden; box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 20%, transparent); }
+.org-modal h3 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; }
+.org-modal .m-org { font-size: .9rem; color: var(--ink-soft); font-weight: 600; margin-top: 5px; }
+.org-modal .m-date { font-family: var(--mono); font-size: .78rem; color: var(--ink-mute); margin-top: 4px; }
+.org-modal .m-desc { color: var(--ink-soft); margin-top: 16px; }
+.org-modal ul { list-style: none; margin-top: 16px; display: grid; gap: 9px; }
+.org-modal li { position: relative; padding-left: 22px; color: var(--ink-soft); font-size: .95rem; }
+.org-modal li::before { content: ""; position: absolute; left: 2px; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-2); }
+.org-modal .m-stats { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+.org-modal .m-stats span { font-family: var(--mono); font-size: .74rem; font-weight: 600; color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 9%, transparent); padding: 5px 11px; border-radius: 8px; }
+.org-modal .m-close { position: absolute; top: 14px; right: 14px; z-index: 20; width: 40px; height: 40px; border-radius: 50%; border: 0;
+  display: grid; place-items: center; cursor: pointer; color: var(--ink); background: rgba(255,255,255,.9); backdrop-filter: blur(4px); box-shadow: var(--shadow-md); transition: background .2s, transform .2s; }
+html[data-theme="dark"] .org-modal .m-close { background: rgba(20,23,31,.9); }
+.org-modal .m-close:hover { background: #fff; transform: scale(1.08); }
+html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.98); }
+.org-modal .m-close svg { width: 18px; height: 18px; pointer-events: none; }
+
 /* ---------- Projects ---------- */
 .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .proj-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 30px;
@@ -488,6 +598,207 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
         </article>
 
       </div>
+
+      <!-- ===== Organizational Experience ===== -->
+      <div class="exp-subhead">
+        <h3>Organizational <span class="grad">Experience</span></h3>
+      </div>
+      <div class="exp-hint">
+        Beyond roles and responsibilities: building connections, empowering people, and creating lasting impact.
+      </div>
+
+      <div class="org-track" id="orgTrack">
+
+        <!-- Head of Dhamma and Social Division -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 3</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-kmb-head-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kmb-head-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-kmb-head-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kmb-head-2.jpg</span></div></div>
+              <div class="org-shot"><img src="org-kmb-head-3.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kmb-head-3.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-kmb-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>☸️</span>'"> KMB Dhammavaddhana</span>
+            <h5>Head of Dhamma &amp; Social Division</h5>
+            <div class="org-org">BINUS University · Tangerang</div>
+            <div class="org-date">Jan 2025 — Dec 2025 · 1 yr</div>
+            <p class="org-desc">Led the Dhamma &amp; Social Division, overseeing 60+ staff and activists across the chapter's annual religious and social programs.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Designed and managed the annual work programs for the Dhamma and Social Division.</li>
+              <li>Coordinated across regions to distribute information on religious classes.</li>
+              <li>Advised and supervised major events such as Social Service, Green Hope, and Fangshen.</li>
+              <li>Guided 60+ staff and activists in implementing divisional programs.</li>
+              <li>Built a supportive, creative environment for members to learn, collaborate, and grow.</li>
+            </ul>
+            <div class="m-stats"><span>60+ staff led</span><span>Leadership</span><span>Strategic Planning</span><span>Delegation</span></div>
+          </template>
+        </article>
+
+        <!-- Event Advisor — Kathina 2025 -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 3</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-kathina-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kathina-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-kathina-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kathina-2.jpg</span></div></div>
+              <div class="org-shot"><img src="org-kathina-3.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kathina-3.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-kmb-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>☸️</span>'"> KMB Dhammavaddhana</span>
+            <h5>Event Advisor — Kathina 2025</h5>
+            <div class="org-org">Kathina Celebration 2569 B.E.</div>
+            <div class="org-date">Jul 2025 — Oct 2025 · 4 mos</div>
+            <p class="org-desc">Advised the Kathina 2025 committee of ~30 members and 60+ volunteers — an event that engaged 550+ devotees and 10+ Sangha members.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Supervised and guided 30 committee members and 60+ volunteers throughout preparation and execution.</li>
+              <li>Ensured all operational tasks and event logistics ran according to plan and schedule.</li>
+              <li>Provided mentorship, feedback, and direction to improve coordination and event quality.</li>
+              <li>Collaborated with the lead team for a smooth, meaningful ceremony for Sangha and devotees.</li>
+            </ul>
+            <div class="m-stats"><span>550+ devotees</span><span>Advisor</span><span>Attention to Detail</span><span>Time Management</span></div>
+          </template>
+        </article>
+
+        <!-- Event Advisor — One Million Help 2025 -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 3</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-omh-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-omh-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-omh-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-omh-2.jpg</span></div></div>
+              <div class="org-shot"><img src="org-omh-3.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-omh-3.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-kmb-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>☸️</span>'"> KMB Dhammavaddhana</span>
+            <h5>Event Advisor — One Million Help 2025</h5>
+            <div class="org-org">Social Project · SDG 12</div>
+            <div class="org-date">Feb 2025 — Jun 2025 · 5 mos</div>
+            <p class="org-desc">Advised the One Million Help 2025 team on an SDG 12 initiative that supported 90+ residents in Renged Village, Tangerang.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Supervised and guided 30 committee members and 15+ volunteers.</li>
+              <li>Provided direction, mentorship, and input to the organizing team.</li>
+              <li>Reviewed and ensured the quality of tasks and event deliverables.</li>
+              <li>Aligned activities with the SDG 12 objective and created real impact for the local community.</li>
+            </ul>
+            <div class="m-stats"><span>90+ residents helped</span><span>SDG 12</span><span>Mentorship</span><span>Team Management</span></div>
+          </template>
+        </article>
+
+        <!-- Head of Patriotic & Civic Engagement Division -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 2</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-osis-head-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-osis-head-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-osis-head-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-osis-head-2.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-osis-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>🏫</span>'"> OSIS SMA Jembatan Budaya</span>
+            <h5>Head of Patriotic &amp; Civic Engagement</h5>
+            <div class="org-org">Student Council · Bali</div>
+            <div class="org-date">Jan 2022 — Dec 2022 · 1 yr</div>
+            <p class="org-desc">Led the Patriotic &amp; Civic Engagement Division — managing flag ceremonies and school-wide events with 100+ student participants.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Supervised 3 staff members and coordinated with 100+ student participants.</li>
+              <li>Designed, managed, and monitored division programs and activities.</li>
+              <li>Oversaw the execution of flag ceremonies and other school-wide events.</li>
+            </ul>
+            <div class="m-stats"><span>100+ participants</span><span>Supervisory Skills</span><span>Team Management</span><span>Communication</span></div>
+          </template>
+        </article>
+
+        <!-- Project Manager — Kartini Day 2022 -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 2</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-kartini-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kartini-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-kartini-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-kartini-2.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-osis-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>🏫</span>'"> OSIS SMA Jembatan Budaya</span>
+            <h5>Project Manager — Kartini Day 2022</h5>
+            <div class="org-org">Event Project · Bali</div>
+            <div class="org-date">Mar 2022 — May 2022 · 3 mos</div>
+            <p class="org-desc">Project Manager for the Kartini Day Celebration 2022, leading a 20+ member team from preparation to event completion.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Directed, supervised, and guided a team of 20+ members to ensure smooth execution.</li>
+              <li>Managed event planning, coordination, and execution end to end.</li>
+              <li>Ensured tasks were completed on time and aligned with event objectives.</li>
+            </ul>
+            <div class="m-stats"><span>20+ team members</span><span>Project Management</span><span>Adaptation</span></div>
+          </template>
+        </article>
+
+        <!-- Ceremonial Commander — 77th Independence Day -->
+        <article class="org-card reveal">
+          <div class="org-media">
+            <span class="count">1 / 2</span>
+            <button class="org-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="org-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="org-track-x">
+              <div class="org-shot"><img src="org-pbb-1.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-pbb-1.jpg</span></div></div>
+              <div class="org-shot"><img src="org-pbb-2.jpg" alt="" onerror="this.style.display='none'"><div class="ph"><span class="ic">📷</span><span class="t">org-pbb-2.jpg</span></div></div>
+            </div>
+          </div>
+          <div class="org-body">
+            <span class="org-chip"><img class="org-ico" src="org-jb-logo.png" alt="" onerror="this.outerHTML='<span class=&quot;org-ico&quot;>🎖️</span>'"> Jembatan Budaya School</span>
+            <h5>Ceremonial Commander — 77th Independence Day</h5>
+            <div class="org-org">Flag Ceremony · Bali</div>
+            <div class="org-date">Aug 2022 · 1 mo</div>
+            <p class="org-desc">Served as Ceremonial Commander for the 77th Independence Day Commemoration — leading the full ceremony with precision and discipline.</p>
+            <button class="org-toggle" type="button">Read more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <template class="org-data">
+            <ul>
+              <li>Directed and commanded the entire sequence of the Independence Day ceremony.</li>
+              <li>Coordinated the movements of the flag-hoisting troop and ceremonial units.</li>
+              <li>Ensured the ceremony was executed with discipline, order, and respect.</li>
+              <li>Maintained strict timing and formality, serving as the focal point of coordination.</li>
+            </ul>
+            <div class="m-stats"><span>Patriotism</span><span>Self-confidence</span><span>Coordination</span><span>Student Discipline</span></div>
+          </template>
+        </article>
+
+      </div><!-- /.org-track -->
+
     </div>
   </section>
 
@@ -638,6 +949,28 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
     </div>
   </div>
 
+  <!-- Organization detail modal -->
+  <div class="org-modal" id="orgModal" aria-hidden="true">
+    <div class="bg" data-oclose></div>
+    <div class="box">
+      <button class="m-close" data-oclose aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <div class="m-media" id="omMedia">
+        <span class="count" id="omCount">1 / 1</span>
+        <button class="org-nav prev" id="omPrev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="org-nav next" id="omNext" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="org-track-x" id="omTrackX"></div>
+      </div>
+      <div class="m-body">
+        <span class="m-chip" id="omChip"></span>
+        <h3 id="omTitle"></h3>
+        <div class="m-org" id="omOrg"></div>
+        <div class="m-date" id="omDate"></div>
+        <p class="m-desc" id="omDesc"></p>
+        <div id="omExtra"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
 (function () {
   'use strict';
@@ -685,6 +1018,85 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
   /* ---------- Language bars ---------- */
   const lb = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate'); lb.unobserve(e.target); } }), { threshold: .4 });
   $$('.lang-row').forEach(el => lb.observe(el));
+
+  /* ---------- Organizational: drag-to-scroll track ---------- */
+  const orgTrack = $('#orgTrack');
+  if (orgTrack) {
+    let down = false, startX = 0, startScroll = 0, moved = 0;
+    orgTrack.addEventListener('pointerdown', e => {
+      if (e.target.closest('.org-nav, .org-toggle')) return;
+      down = true; moved = 0; startX = e.clientX; startScroll = orgTrack.scrollLeft;
+      orgTrack.style.cursor = 'grabbing'; orgTrack.style.scrollBehavior = 'auto';
+    });
+    window.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - startX; moved = Math.abs(dx);
+      orgTrack.scrollLeft = startScroll - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!down) return;
+      down = false; orgTrack.style.cursor = ''; orgTrack.style.scrollBehavior = 'smooth';
+    });
+    // prevent accidental click after a drag
+    orgTrack.addEventListener('click', e => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+  }
+
+  /* ---------- Organizational: in-card photo arrows ---------- */
+  function setupGallery(media) {
+    const strip = media.querySelector('.org-track-x');
+    const shots = media.querySelectorAll('.org-shot');
+    const counter = media.querySelector('.count');
+    const prev = media.querySelector('.org-nav.prev');
+    const next = media.querySelector('.org-nav.next');
+    if (!strip) return;
+    let i = 0;
+    const total = shots.length;
+    function render() {
+      strip.style.transform = `translateX(${-i * 100}%)`;
+      if (counter) counter.textContent = (i + 1) + ' / ' + total;
+      if (prev) prev.toggleAttribute('disabled', i === 0);
+      if (next) next.toggleAttribute('disabled', i === total - 1);
+    }
+    if (total < 2) { if (counter) counter.style.display = 'none'; if (prev) prev.remove(); if (next) next.remove(); return; }
+    if (prev) prev.addEventListener('click', e => { e.stopPropagation(); if (i > 0) { i--; render(); } });
+    if (next) next.addEventListener('click', e => { e.stopPropagation(); if (i < total - 1) { i++; render(); } });
+    render();
+  }
+  $$('.org-card .org-media').forEach(setupGallery);
+
+  /* ---------- Organizational: Read more → modal ---------- */
+  const orgModal = $('#orgModal');
+  const omTrackX = $('#omTrackX'), omMedia = $('#omMedia');
+  function openOrgModal(card) {
+    // clone photos
+    omTrackX.innerHTML = card.querySelector('.org-track-x').innerHTML;
+    // text
+    $('#omChip').innerHTML = card.querySelector('.org-chip').innerHTML;
+    $('#omTitle').textContent = card.querySelector('h5').textContent;
+    $('#omOrg').textContent = card.querySelector('.org-org').textContent;
+    $('#omDate').textContent = card.querySelector('.org-date').textContent;
+    $('#omDesc').textContent = card.querySelector('.org-desc').textContent;
+    $('#omExtra').innerHTML = card.querySelector('.org-data').innerHTML;
+    // reset + wire gallery for modal
+    const shots = omTrackX.querySelectorAll('.org-shot');
+    const counter = $('#omCount'), prev = $('#omPrev'), next = $('#omNext');
+    let i = 0;
+    function render() {
+      omTrackX.style.transform = `translateX(${-i * 100}%)`;
+      counter.textContent = (i + 1) + ' / ' + shots.length;
+      prev.toggleAttribute('disabled', i === 0);
+      next.toggleAttribute('disabled', i === shots.length - 1);
+    }
+    counter.style.display = shots.length < 2 ? 'none' : '';
+    prev.onclick = () => { if (i > 0) { i--; render(); } };
+    next.onclick = () => { if (i < shots.length - 1) { i++; render(); } };
+    render();
+    orgModal.classList.add('open'); orgModal.setAttribute('aria-hidden', 'false');
+  }
+  function closeOrgModal() { orgModal.classList.remove('open'); orgModal.setAttribute('aria-hidden', 'true'); }
+  $$('.org-toggle').forEach(btn => btn.addEventListener('click', () => openOrgModal(btn.closest('.org-card'))));
+  orgModal.addEventListener('click', e => { if (e.target.closest('[data-oclose]')) closeOrgModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && orgModal.classList.contains('open')) closeOrgModal(); });
 
   /* ---------- Skills data ---------- */
   // icon: slug from Simple Icons CDN, or {emoji} fallback
