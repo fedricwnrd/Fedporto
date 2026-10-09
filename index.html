@@ -210,7 +210,7 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
 
 /* horizontal swipe track of role cards — smooth, hidden scrollbar */
 .org-track { display: flex; gap: 22px; overflow-x: auto; overflow-y: hidden; padding: 6px 6px 18px;
-  -webkit-overflow-scrolling: touch; scroll-behavior: smooth; cursor: grab;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth; scroll-snap-type: x mandatory; cursor: grab;
   scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--brand) 55%, var(--line)) var(--bg-soft); }
 .org-track::-webkit-scrollbar { height: 10px; }
 .org-track::-webkit-scrollbar-track { background: var(--bg-soft); border-radius: 100px; }
@@ -221,8 +221,15 @@ html[data-theme="dark"] .theme-toggle .lbl-dark { display: inline; }
 /* one card per role — equal height */
 .org-card { flex: 0 0 clamp(290px, 80vw, 360px); display: flex; flex-direction: column;
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden;
-  box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s; }
+  scroll-snap-align: start; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s, border-color .3s; }
 .org-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); }
+.org-controls { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+.org-carousel-btn { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line);
+  border-radius: 50%; background: var(--bg-card); color: var(--ink); cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: color .2s, background .2s, border-color .2s, transform .2s; }
+.org-carousel-btn:hover { color: var(--brand); border-color: var(--brand); transform: translateY(-2px); }
+.org-carousel-btn:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 3px; }
+.org-carousel-btn svg { width: 18px; height: 18px; }
 
 /* big photo at top with arrow navigation */
 .org-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--bg-soft); }
@@ -447,6 +454,7 @@ html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.9
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
+  .org-track { scroll-behavior: auto; }
 }
   </style>
 </head>
@@ -607,7 +615,7 @@ html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.9
         Beyond roles and responsibilities: building connections, empowering people, and creating lasting impact.
       </div>
 
-      <div class="org-track" id="orgTrack">
+      <div class="org-track" id="orgTrack" role="region" aria-label="Organizational experience" tabindex="0">
 
         <!-- Head of Dhamma and Social Division -->
         <article class="org-card reveal">
@@ -798,6 +806,14 @@ html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.9
         </article>
 
       </div><!-- /.org-track -->
+      <div class="org-controls" aria-label="Organizational experience carousel controls">
+        <button class="org-carousel-btn" id="orgPrev" type="button" aria-label="Previous organizational experience">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="org-carousel-btn" id="orgNext" type="button" aria-label="Next organizational experience">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
 
     </div>
   </section>
@@ -1022,6 +1038,54 @@ html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.9
   /* ---------- Organizational: drag-to-scroll track ---------- */
   const orgTrack = $('#orgTrack');
   if (orgTrack) {
+    const originalCards = Array.from(orgTrack.querySelectorAll(':scope > .org-card'));
+    let cycleWidth = 0;
+    if (originalCards.length > 1) {
+      const makeClones = cards => cards.map(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.remove('reveal');
+        clone.classList.add('in');
+        clone.dataset.orgClone = 'true';
+        return clone;
+      });
+      orgTrack.prepend(...makeClones(originalCards));
+      orgTrack.append(...makeClones(originalCards));
+
+      function measureOrgCycle() {
+        const firstOriginal = orgTrack.children[originalCards.length];
+        const firstTrailingClone = orgTrack.children[originalCards.length * 2];
+        cycleWidth = firstTrailingClone.offsetLeft - firstOriginal.offsetLeft;
+        orgTrack.scrollLeft = cycleWidth;
+      }
+      requestAnimationFrame(measureOrgCycle);
+      if ('ResizeObserver' in window) new ResizeObserver(measureOrgCycle).observe(orgTrack);
+      else window.addEventListener('resize', measureOrgCycle);
+
+      orgTrack.addEventListener('scroll', () => {
+        if (!cycleWidth) return;
+        let offset = 0;
+        if (orgTrack.scrollLeft < cycleWidth - 1) offset = cycleWidth;
+        else if (orgTrack.scrollLeft >= cycleWidth * 2 - 1) offset = -cycleWidth;
+        if (offset) {
+          const behavior = orgTrack.style.scrollBehavior;
+          orgTrack.style.scrollBehavior = 'auto';
+          orgTrack.scrollLeft += offset;
+          requestAnimationFrame(() => { orgTrack.style.scrollBehavior = behavior; });
+        }
+      }, { passive: true });
+
+      const step = () => orgTrack.children[1].offsetLeft - orgTrack.children[0].offsetLeft;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      $('#orgPrev').addEventListener('click', () => orgTrack.scrollBy({
+        left: -step(), behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
+      }));
+      $('#orgNext').addEventListener('click', () => orgTrack.scrollBy({
+        left: step(), behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
+      }));
+    } else {
+      $$('.org-controls').forEach(controls => { controls.hidden = true; });
+    }
+
     let down = false, startX = 0, startScroll = 0, moved = 0;
     orgTrack.addEventListener('pointerdown', e => {
       if (e.target.closest('.org-nav, .org-toggle')) return;
@@ -1094,7 +1158,10 @@ html[data-theme="dark"] .org-modal .m-close:hover { background: rgba(35,40,52,.9
     orgModal.classList.add('open'); orgModal.setAttribute('aria-hidden', 'false');
   }
   function closeOrgModal() { orgModal.classList.remove('open'); orgModal.setAttribute('aria-hidden', 'true'); }
-  $$('.org-toggle').forEach(btn => btn.addEventListener('click', () => openOrgModal(btn.closest('.org-card'))));
+  orgTrack.addEventListener('click', e => {
+    const btn = e.target.closest('.org-toggle');
+    if (btn && orgTrack.contains(btn)) openOrgModal(btn.closest('.org-card'));
+  });
   orgModal.addEventListener('click', e => { if (e.target.closest('[data-oclose]')) closeOrgModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && orgModal.classList.contains('open')) closeOrgModal(); });
 
